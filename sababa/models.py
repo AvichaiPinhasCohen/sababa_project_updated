@@ -61,7 +61,7 @@ class Gifts(models.Model):
         return self.name
 
 
-class InvitedGifts(models.Model):
+class InvitedGifts(models.Model):  # TODO: Ordered gifts
     invitation_id = models.AutoField(primary_key=True)
     gift = models.ForeignKey(Gifts, on_delete=models.DO_NOTHING)
     employee = models.ForeignKey(Employee, on_delete=models.DO_NOTHING)
@@ -83,7 +83,7 @@ class WelfareActivity(models.Model):
     contact = models.CharField(max_length=100)
 
 
-class Invitation(models.Model):
+class Invitation(models.Model):  # TODO: Rename orders
     id = models.AutoField(primary_key=True)
     orderer = models.ForeignKey(Employee, on_delete=models.DO_NOTHING, null=True)
     welfare_order = models.ForeignKey(WelfareActivity, on_delete=models.DO_NOTHING, null=True)
