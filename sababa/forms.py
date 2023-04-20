@@ -1,7 +1,7 @@
 from django import forms
-from django.forms.widgets import Select
-
-from .models import Employee, HappyHour, EventRegistration, Gifts, InvitedGifts
+from django.contrib.auth.forms import UserCreationForm
+from .models import Employee, HappyHour, EventRegistration, Gifts, InvitedGifts, UserProfile
+from django.contrib.auth.models import User
 
 
 class UpdateEmployeePermissionForm(forms.ModelForm):
@@ -43,3 +43,19 @@ class ChooseGiftForm(forms.ModelForm):
         self.fields['gift'] = forms.ModelChoiceField(
             queryset=Gifts.objects.all(),
             to_field_name="id")
+
+
+class RegistrationForm(UserCreationForm):
+    employee = forms.ModelChoiceField(queryset=Employee.objects.all(), to_field_name="id")
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2', 'employee')
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user_profile = UserProfile(user=user, employee=self.cleaned_data['employee'])
+        if commit:
+            user.save()
+            user_profile.save()
+        return user, user_profile

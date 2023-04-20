@@ -10,5 +10,4 @@ urlpatterns = [
     path('choose_birthday_gift', views.choose_birthday_gift, name='choose_birthday_gift'),
     path('register/', views.register_view, name='register'),
     path('login/', views.login_view, name='login'),
-    path('logout/', views.logout_view, name='logout'),
 ]

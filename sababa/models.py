@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Events(models.Model):
@@ -96,7 +97,6 @@ class Invitation(models.Model):  # TODO: Rename orders
     finance_perm = models.BooleanField()
 
 
-class User(models.Model):
-    username = models.CharField(max_length=50)
-    password = models.CharField(max_length=50)
-    email = models.EmailField()
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    employee = models.ForeignKey(Employee, on_delete=models.DO_NOTHING, null=True)

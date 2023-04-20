@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout
 
-from .forms import UpdateEmployeePermissionForm, AddNewHappyHourPackage, EventRegistrationForm, ChooseGiftForm
+from .forms import UpdateEmployeePermissionForm, AddNewHappyHourPackage, EventRegistrationForm, ChooseGiftForm, RegistrationForm
 from .models import Employee, InvitedGifts
 
 
@@ -98,12 +98,13 @@ def choose_gift(type, request):
 
 def register_view(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = RegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user, user_profile = form.save()
+            login(request, user)
             return redirect('login')
     else:
-        form = UserCreationForm()
+        form = RegistrationForm()
     return render(request, 'register.html', {'form': form})
 
 
@@ -111,14 +112,8 @@ def login_view(request):
     if request.method == 'POST':
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('choose_holiday_gift')  # TODO: change to home page later..
+            login(request, form.get_user())
+            return redirect('choose_holiday_gift')
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
-
-
-def logout_view(request):
-    logout(request)
-    return redirect('login')
