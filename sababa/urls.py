@@ -8,4 +8,7 @@ urlpatterns = [
     path('event_register', views.register_to_event, name='event_register'),
     path('choose_holiday_gift', views.choose_holiday_gift, name='choose_holiday_gift'),
     path('choose_birthday_gift', views.choose_birthday_gift, name='choose_birthday_gift'),
+    path('register/', views.register_view, name='register'),
+    path('login/', views.login_view, name='login'),
+    path('logout/', views.logout_view, name='logout'),
 ]

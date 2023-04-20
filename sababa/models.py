@@ -94,3 +94,9 @@ class Invitation(models.Model):  # TODO: Rename orders
     manager_perm = models.BooleanField()
     hr_perm = models.BooleanField()
     finance_perm = models.BooleanField()
+
+
+class User(models.Model):
+    username = models.CharField(max_length=50)
+    password = models.CharField(max_length=50)
+    email = models.EmailField()
