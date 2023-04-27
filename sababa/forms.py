@@ -1,7 +1,28 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Employee, HappyHour, EventRegistration, Gifts, InvitedGifts, UserProfile
+from .models import *
 from django.contrib.auth.models import User
+
+
+"""
+General TODO's:
+1. permission for some forms
+2. adding employees using some form - V
+3. renaming invitation to order
+
+
+Needed forms:
+1. choosing present for holiday / birthday - V
+2. registration for event - V
+3. submitting request for peilot reveha - validate that it is peilot reveha
+4. peilot reveha confirmation / disallow
+5. updating submmition of request after being submitted - 
+6. generating reports
+7. changing permissions - V
+8. watching birthdays + sending birthday messages ?
+9. watching organiztion benefits 
+10. adding benefits to preffered benefits
+"""
 
 
 class UpdateEmployeePermissionForm(forms.ModelForm):
@@ -19,6 +40,12 @@ class UpdateEmployeePermissionForm(forms.ModelForm):
 class AddNewHappyHourPackage(forms.ModelForm):
     class Meta:
         model = HappyHour
+        fields = '__all__'
+
+
+class AddEventForm(forms.ModelForm):
+    class Meta:
+        model = Events
         fields = '__all__'
 
 
@@ -59,3 +86,15 @@ class RegistrationForm(UserCreationForm):
             user.save()
             user_profile.save()
         return user, user_profile
+
+
+class AddEmployeeForm(forms.ModelForm):
+    class Meta:
+        model = Employee
+        fields = '__all__'
+
+
+class WelfareActivityRequestForm(forms.ModelForm):
+    class Meta:
+        model = WelfareActivity
+        fields = '__all__'

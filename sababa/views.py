@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout
 
-from .forms import UpdateEmployeePermissionForm, AddNewHappyHourPackage, EventRegistrationForm, ChooseGiftForm, RegistrationForm
+from .forms import *
 from .models import Employee, InvitedGifts
 
 
@@ -44,6 +44,24 @@ def add_new_happy_hour_package(request):
     )
 
 
+def add_event(request):
+    resp = ''
+    form = AddEventForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            resp = "Success!"
+
+    return render(
+        request,
+        "form.html",
+        {
+            "form": form,
+            "resp": resp
+        },
+    )
+
+
 def register_to_event(request):
     resp = ''
     form = EventRegistrationForm(request.POST or None)
@@ -70,7 +88,7 @@ def choose_birthday_gift(request):
     return choose_gift(1, request)
 
 
-def choose_gift(type, request):
+def choose_gift(type, request):  # TODO: Impl logic
     print(request.user)
     resp = ''
     form = ChooseGiftForm(type, request.POST or None)
@@ -117,3 +135,41 @@ def login_view(request):
     else:
         form = AuthenticationForm()
     return render(request, 'login.html', {'form': form})
+
+
+# TODO: Same conventions - add view prefix
+# TODO: Add generic form template function
+def add_employee_view(request):
+    resp = ''
+    form = AddEmployeeForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            resp = "Success!"
+
+    return render(
+        request,
+        "form.html",
+        {
+            "form": form,
+            "resp": resp
+        },
+    )
+
+
+def add_welfare_activity_request_view(request):
+    resp = ''
+    form = WelfareActivityRequestForm(request.POST or None)
+    if request.method == "POST":
+        if form.is_valid():
+            form.save()
+            resp = "Success!"
+
+    return render(
+        request,
+        "form.html",
+        {
+            "form": form,
+            "resp": resp
+        },
+    )

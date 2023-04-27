@@ -6,6 +6,7 @@ class Events(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     date = models.DateTimeField()
+    description = models.CharField(max_length=100)
 
 
 class Employee(models.Model):
@@ -82,6 +83,7 @@ class WelfareActivity(models.Model):
     max_participants = models.IntegerField()
     dates = models.CharField(max_length=100)  # TODO: List of dates
     contact = models.CharField(max_length=100)
+    description = models.CharField(max_length=256)
 
 
 class Invitation(models.Model):  # TODO: Rename orders
