@@ -13,5 +13,10 @@ urlpatterns = [
     path('register/', views.register_view, name='register'),
     path('login/', views.login_view, name='login'),
     path('add_preferred_benefits/', views.add_preferred_benefits, name='add_preferred_benefits'),
-    path('edit_benefits_view/<int:pk>/', views.edit_benefits_view, name='edit_view'),
+    path('edit_benefits_view/<int:pk>/', views.edit_benefits_view, name='edit_benefits_view'),
+
+
+    path('welfare_activity_confirmation/', views.welfare_activity_confirmation, name='welfare_activity_confirmation'),
+    path('edit_welfare_activity_confirmation_view/<int:pk>/',
+         views.edit_welfare_activity_confirmation_view, name='edit_welfare_activity_confirmation_view'),
 ]

@@ -178,7 +178,7 @@ def add_welfare_activity_request_view(request):
 def add_preferred_benefits(request):
     resp = ''
     records = Benefits.objects.all()
-    return render(request, 'list_records.html', {'resp': resp, 'records': records})
+    return render(request, 'list_records.html', {'url': 'edit_benefits_view', 'resp': resp, 'records': records})
 
 
 def edit_benefits_view(request, pk):
@@ -186,6 +186,21 @@ def edit_benefits_view(request, pk):
     record = get_object_or_404(Benefits, pk=pk)
     ChosenBenefits.objects.create(benefit=record, employee=Employee.objects.get(id=1))  # TODO: Get id from login
     resp = 'Added successfully'
+    # Render a template with the record's data and an edit form
+    print(pk)
+    return render(request, 'list_records.html', {'url': 'edit_benefits_view', 'resp': resp, 'record': record})
+
+def welfare_activity_confirmation(request):
+    resp = ''
+    records = WelfareActivity.objects.all()
+    return render(request, 'list_records.html', {'url': 'edit_welfare_activity_confirmation_view', 'resp': resp, 'records': records})
+
+
+def edit_welfare_activity_confirmation_view(request, pk):
+    resp = 'Failed'
+    record = get_object_or_404(WelfareActivity, pk=pk)  # TODO: Get employee id and type, update confirm by type. also add another button - accept and faliure
+    # TODO: Update welfare activity
+    resp = 'Updated successfully'
     # Render a template with the record's data and an edit form
     print(pk)
     return render(request, 'list_records.html', {'resp': resp, 'record': record})

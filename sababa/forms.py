@@ -14,14 +14,14 @@ General TODO's:
 Needed forms:
 1. choosing present for holiday / birthday - V
 2. registration for event - V
-3. submitting request for peilot reveha - validate that it is peilot reveha - V
+3. submitting request for welfare activity - validate that it is peilot reveha - V
 4. changing permissions - V
 5. adding benefits to preffered benefits - V
-6. peilot reveha confirmation / disallow
-7. updating submmition of request after being submitted 
-8. generating reports
-9. watching birthdays + sending birthday messages via mail
-10. watching organiztion benefits 
+6. watching organiztion benefits - V
+7. welfare activity confirmation / disallow
+8. updating welfare activity - get all welfare activities by employee, add update option - see https://www.w3schools.com/django/django_update_record.php
+9. generating reports
+10. watching birthdays + sending birthday messages via mail
 """
 
 
