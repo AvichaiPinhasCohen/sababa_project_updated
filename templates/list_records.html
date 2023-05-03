@@ -1,0 +1,7 @@
+{{resp}}
+{% for record in records %}
+  <div>
+    Name: {{ record.name }} Description: {{ record.description }}
+    <button onclick="window.location.href='/edit_benefits_view/{{ record.id }}'">Edit</button>
+  </div>
+{% endfor %}

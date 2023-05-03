@@ -14,14 +14,14 @@ General TODO's:
 Needed forms:
 1. choosing present for holiday / birthday - V
 2. registration for event - V
-3. submitting request for peilot reveha - validate that it is peilot reveha
-4. peilot reveha confirmation / disallow
-5. updating submmition of request after being submitted - 
-6. generating reports
-7. changing permissions - V
-8. watching birthdays + sending birthday messages ?
-9. watching organiztion benefits 
-10. adding benefits to preffered benefits
+3. submitting request for peilot reveha - validate that it is peilot reveha - V
+4. changing permissions - V
+5. adding benefits to preffered benefits - V
+6. peilot reveha confirmation / disallow
+7. updating submmition of request after being submitted 
+8. generating reports
+9. watching birthdays + sending birthday messages via mail
+10. watching organiztion benefits 
 """
 
 

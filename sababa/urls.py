@@ -12,4 +12,6 @@ urlpatterns = [
     path('choose_birthday_gift', views.choose_birthday_gift, name='choose_birthday_gift'),
     path('register/', views.register_view, name='register'),
     path('login/', views.login_view, name='login'),
+    path('add_preferred_benefits/', views.add_preferred_benefits, name='add_preferred_benefits'),
+    path('edit_benefits_view/<int:pk>/', views.edit_benefits_view, name='edit_view'),
 ]

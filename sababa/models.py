@@ -6,7 +6,7 @@ class Events(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     date = models.DateTimeField()
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=100, default="No description added")
 
 
 class Employee(models.Model):
@@ -49,7 +49,7 @@ class Benefits(models.Model):
     added_date = models.DateField()
 
 
-class PreferredBenefits(models.Model):
+class ChosenBenefits(models.Model):
     benefit = models.ForeignKey(Benefits, on_delete=models.DO_NOTHING)
     employee = models.ForeignKey(Employee, on_delete=models.DO_NOTHING)
 
@@ -83,7 +83,13 @@ class WelfareActivity(models.Model):
     max_participants = models.IntegerField()
     dates = models.CharField(max_length=100)  # TODO: List of dates
     contact = models.CharField(max_length=100)
-    description = models.CharField(max_length=256)
+    description = models.CharField(max_length=256, default="No description added")
+
+    manager_perm = models.BooleanField(default=False)
+    hr_perm = models.BooleanField(default=False)
+    finance_perm = models.BooleanField(default=False)
+
+    # TODO: If activity is not confirmed, see why
 
 
 class Invitation(models.Model):  # TODO: Rename orders

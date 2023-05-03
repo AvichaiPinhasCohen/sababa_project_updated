@@ -1,9 +1,9 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout
 
 from .forms import *
-from .models import Employee, InvitedGifts
+from .models import *
 
 
 def update_employee_perm(request):
@@ -173,3 +173,19 @@ def add_welfare_activity_request_view(request):
             "resp": resp
         },
     )
+
+
+def add_preferred_benefits(request):
+    resp = ''
+    records = Benefits.objects.all()
+    return render(request, 'list_records.html', {'resp': resp, 'records': records})
+
+
+def edit_benefits_view(request, pk):
+    resp = 'Failed'
+    record = get_object_or_404(Benefits, pk=pk)
+    ChosenBenefits.objects.create(benefit=record, employee=Employee.objects.get(id=1))  # TODO: Get id from login
+    resp = 'Added successfully'
+    # Render a template with the record's data and an edit form
+    print(pk)
+    return render(request, 'list_records.html', {'resp': resp, 'record': record})
