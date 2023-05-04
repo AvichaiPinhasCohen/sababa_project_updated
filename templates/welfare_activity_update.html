@@ -25,3 +25,10 @@ Description:<br>
 
 <input type="submit" value="Submit">
 </form>
+
+<form action="updaterecord/{{ activity.id }}" method="post">
+{% csrf_token %}
+<button type="submit" name="submit_button" value="hr">hr perm</button>
+<button type="submit" name="submit_button" value="finance">finance perm</button>
+<button type="submit" name="submit_button" value="dm">direct manager perm</button>
+</form>

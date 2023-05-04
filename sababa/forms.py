@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 
 """
 General TODO's:
-1. permission for some forms
+1. permission for some forms - including specific permissions for operations such as hr_perm submitting, vieweing specific forms, etc
 2. adding employees using some form - V
 3. renaming invitation to order
 
@@ -19,7 +19,8 @@ Needed forms:
 5. adding benefits to preffered benefits - V
 6. watching organiztion benefits - V
 7. updating welfare activity - V
-8. welfare activity confirmation / disallow 
+8. welfare activity confirmation -V
+9. welfare activity disallow - need to add allow / disallow reason and update the db 
 9. generating reports
 10. watching birthdays + sending birthday messages via mail
 """

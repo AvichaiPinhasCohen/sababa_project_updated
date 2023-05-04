@@ -231,11 +231,19 @@ def welfare_activity_update(request, id):
 
 def welfare_activity_updaterecord(request, id):
     activity = WelfareActivity.objects.get(id=id)
-    activity.name = request.POST['name']
-    activity.max_participants = request.POST['max_participants']
-    activity.dates = request.POST['dates']
-    activity.contact = request.POST['contact']
-    activity.description = request.POST['description']
+    print(request.POST.get('submit_button'))
+    if request.POST.get('submit_button') == 'hr':
+        activity.hr_perm = True
+    elif request.POST.get('submit_button') == 'finance':
+        activity.finance_perm = True
+    elif request.POST.get('submit_button') == 'dm':
+        activity.manager_perm = True
+    else:
+        activity.name = request.POST['name']
+        activity.max_participants = request.POST['max_participants']
+        activity.dates = request.POST['dates']
+        activity.contact = request.POST['contact']
+        activity.description = request.POST['description']
 
     activity.save()
     return HttpResponseRedirect(reverse('welfare_acitivity_index'))
