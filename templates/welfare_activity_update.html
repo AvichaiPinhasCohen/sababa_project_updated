@@ -1,0 +1,27 @@
+<h1> Update welfare activity </h1>
+
+<form action="updaterecord/{{ activity.id }}" method="post">
+{% csrf_token %}
+Name:<br>
+<input name="name" value="{{ activity.name }}">
+<br><br>
+
+Max participants:<br>
+<input name="max_participants" value="{{ activity.max_participants }}">
+<br><br>
+
+Dates:<br>
+<input name="dates" value="{{ activity.dates }}">
+<br><br>
+
+
+Contact:<br>
+<input name="contact" value="{{ activity.contact }}">
+<br><br>
+
+Description:<br>
+<input name="description" value="{{ activity.description }}">
+<br><br>
+
+<input type="submit" value="Submit">
+</form>

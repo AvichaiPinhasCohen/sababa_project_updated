@@ -1,6 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template import loader
+from django.urls import reverse
 
 from .forms import *
 from .models import *
@@ -157,6 +160,7 @@ def add_employee_view(request):
     )
 
 
+# TODO: Maybe add to the index ?
 def add_welfare_activity_request_view(request):
     resp = ''
     form = WelfareActivityRequestForm(request.POST or None)
@@ -190,6 +194,7 @@ def edit_benefits_view(request, pk):
     print(pk)
     return render(request, 'list_records.html', {'url': 'edit_benefits_view', 'resp': resp, 'record': record})
 
+
 def welfare_activity_confirmation(request):
     resp = ''
     records = WelfareActivity.objects.all()
@@ -204,3 +209,33 @@ def edit_welfare_activity_confirmation_view(request, pk):
     # Render a template with the record's data and an edit form
     print(pk)
     return render(request, 'list_records.html', {'resp': resp, 'record': record})
+
+
+def welfare_acitivity_index(request):
+    welfare_activities = WelfareActivity.objects.all().values()
+    template = loader.get_template('welfare_activities.html')
+    context = {
+        'welfare_activities': welfare_activities
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def welfare_activity_update(request, id):
+    activity = WelfareActivity.objects.get(id=id)
+    template = loader.get_template('welfare_activity_update.html')
+    context = {
+        'activity': activity,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def welfare_activity_updaterecord(request, id):
+    activity = WelfareActivity.objects.get(id=id)
+    activity.name = request.POST['name']
+    activity.max_participants = request.POST['max_participants']
+    activity.dates = request.POST['dates']
+    activity.contact = request.POST['contact']
+    activity.description = request.POST['description']
+
+    activity.save()
+    return HttpResponseRedirect(reverse('welfare_acitivity_index'))

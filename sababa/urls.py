@@ -16,7 +16,14 @@ urlpatterns = [
     path('edit_benefits_view/<int:pk>/', views.edit_benefits_view, name='edit_benefits_view'),
 
 
+
+
     path('welfare_activity_confirmation/', views.welfare_activity_confirmation, name='welfare_activity_confirmation'),
     path('edit_welfare_activity_confirmation_view/<int:pk>/',
          views.edit_welfare_activity_confirmation_view, name='edit_welfare_activity_confirmation_view'),
+
+    path('welfare_acitivity_index', views.welfare_acitivity_index, name='welfare_acitivity_index'),
+    path('welfare_activity_update/<int:id>', views.welfare_activity_update, name='welfare_activity_update'),
+    path('welfare_activity_update/updaterecord/<int:id>',
+         views.welfare_activity_updaterecord, name='welfare_activity_updaterecord'),
 ]

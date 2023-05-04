@@ -18,8 +18,8 @@ Needed forms:
 4. changing permissions - V
 5. adding benefits to preffered benefits - V
 6. watching organiztion benefits - V
-7. welfare activity confirmation / disallow
-8. updating welfare activity - get all welfare activities by employee, add update option - see https://www.w3schools.com/django/django_update_record.php
+7. updating welfare activity - V
+8. welfare activity confirmation / disallow 
 9. generating reports
 10. watching birthdays + sending birthday messages via mail
 """
