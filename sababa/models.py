@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -89,7 +91,7 @@ class WelfareActivity(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     max_participants = models.IntegerField()
-    date = models.DateField()
+    date = models.DateField(default=date(1970, 1, 1))
     contact = models.CharField(max_length=100)
     description = models.CharField(max_length=256, default="No description added")
     reason = models.CharField(max_length=256, default="No reason added")

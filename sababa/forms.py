@@ -10,6 +10,7 @@ TODO:
 2. birthday view
 3. add everything to the design 
 4. watching birthdays + sending birthday messages via mail
+5. Bug fixes :))
 """
 
 
