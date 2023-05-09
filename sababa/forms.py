@@ -20,7 +20,7 @@ Needed forms:
 6. watching organiztion benefits - V
 7. updating welfare activity - V
 8. welfare activity confirmation -V
-9. welfare activity disallow - need to add allow / disallow reason and update the db 
+9. welfare activity disallow - need to add allow / disallow reason and update the db - V 
 9. generating reports
 10. watching birthdays + sending birthday messages via mail
 """

@@ -1,9 +1,15 @@
+import json
+from django.apps import apps
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import login, logout
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
+from django.db import connection, connections
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from .models import *
 
 from .forms import *
 from .models import *
@@ -231,13 +237,21 @@ def welfare_activity_update(request, id):
 
 def welfare_activity_updaterecord(request, id):
     activity = WelfareActivity.objects.get(id=id)
-    print(request.POST.get('submit_button'))
     if request.POST.get('submit_button') == 'hr':
         activity.hr_perm = True
     elif request.POST.get('submit_button') == 'finance':
         activity.finance_perm = True
     elif request.POST.get('submit_button') == 'dm':
         activity.manager_perm = True
+    elif request.POST.get('dis_submit_button') == 'hr_dis':
+        activity.hr_perm = False
+        activity.reason = request.POST['reason']
+    elif request.POST.get('dis_submit_button') == 'finance_dis':
+        activity.finance_perm = False
+        activity.reason = request.POST['reason']
+    elif request.POST.get('dis_submit_button') == 'dm_dis':
+        activity.manager_perm = False
+        activity.reason = request.POST['reason']
     else:
         activity.name = request.POST['name']
         activity.max_participants = request.POST['max_participants']
@@ -247,3 +261,40 @@ def welfare_activity_updaterecord(request, id):
 
     activity.save()
     return HttpResponseRedirect(reverse('welfare_acitivity_index'))
+
+
+def table_list(request):
+    table_info = {}
+    with connections['default'].cursor() as cursor:
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
+        tables = cursor.fetchall()
+        for table in tables:
+            table_name = table[0]
+            cursor.execute(f"PRAGMA table_info({table_name})")
+            columns = cursor.fetchall()
+            column_names = [col[1] for col in columns]
+            table_info[table_name] = column_names
+    return render(request, 'table_list.html', {'table_info': table_info})
+
+
+def display_table(request):
+    tables = []
+    for key in request.GET.keys():
+        if '[]' in key:
+            tables.append(key)
+
+    columns = {}
+    for table in tables:
+        column_list = request.GET.getlist(table)
+        print(column_list)
+        if len(column_list) > 0:
+            columns[table] = column_list
+    data = {}
+
+    with connections['default'].cursor() as cursor:
+        for table, column_list in columns.items():
+            print(table, column_list)
+            cursor.execute(f"SELECT {','.join(column_list)} FROM {table[:-2]}")
+            rows = cursor.fetchall()
+            data[table[:-2]] = rows
+    return render(request, 'display_table.html', {'data': data})

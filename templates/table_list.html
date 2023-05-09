@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Table List</title>
+</head>
+<body>
+    <h1>Table List</h1>
+    <form action="{% url 'display_table' %}" method="get">
+        {% csrf_token %}
+        {% for table_name, column_names in table_info.items %}
+            <h2>{{ table_name }}</h2>
+            {% for column_name in column_names %}
+                <input type="checkbox" name="{{ table_name }}[]" value="{{ column_name }}">
+                <label>{{ column_name }}</label>
+                <br>
+            {% endfor %}
+        {% endfor %}
+        <button type="submit">Display</button>
+    </form>
+</body>
+</html>

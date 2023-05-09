@@ -84,7 +84,7 @@ class WelfareActivity(models.Model):
     dates = models.CharField(max_length=100)  # TODO: List of dates
     contact = models.CharField(max_length=100)
     description = models.CharField(max_length=256, default="No description added")
-
+    reason = models.CharField(max_length=256, default="No reason added")
     manager_perm = models.BooleanField(default=False)
     hr_perm = models.BooleanField(default=False)
     finance_perm = models.BooleanField(default=False)

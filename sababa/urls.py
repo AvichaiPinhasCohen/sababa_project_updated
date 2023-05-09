@@ -26,4 +26,10 @@ urlpatterns = [
     path('welfare_activity_update/<int:id>', views.welfare_activity_update, name='welfare_activity_update'),
     path('welfare_activity_update/updaterecord/<int:id>',
          views.welfare_activity_updaterecord, name='welfare_activity_updaterecord'),
+
+    path('table_list/', views.table_list, name='table_list'),
+    path('display_table/', views.display_table, name='display_table'),
+
+
+
 ]
