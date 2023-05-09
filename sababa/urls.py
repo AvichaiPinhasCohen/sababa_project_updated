@@ -14,22 +14,13 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('add_preferred_benefits/', views.add_preferred_benefits, name='add_preferred_benefits'),
     path('edit_benefits_view/<int:pk>/', views.edit_benefits_view, name='edit_benefits_view'),
-
-
-
-
-    path('welfare_activity_confirmation/', views.welfare_activity_confirmation, name='welfare_activity_confirmation'),
+    path('welfare_activity_confirmation/', views.welfare_activity_confirmation_view, name='welfare_activity_confirmation'),
     path('edit_welfare_activity_confirmation_view/<int:pk>/',
          views.edit_welfare_activity_confirmation_view, name='edit_welfare_activity_confirmation_view'),
-
-    path('welfare_acitivity_index', views.welfare_acitivity_index, name='welfare_acitivity_index'),
-    path('welfare_activity_update/<int:id>', views.welfare_activity_update, name='welfare_activity_update'),
+    path('welfare_acitivity_index', views.welfare_acitivity_index_view, name='welfare_acitivity_index'),
+    path('welfare_activity_update/<int:id>', views.welfare_activity_update_view, name='welfare_activity_update'),
     path('welfare_activity_update/updaterecord/<int:id>',
-         views.welfare_activity_updaterecord, name='welfare_activity_updaterecord'),
-
-    path('table_list/', views.table_list, name='table_list'),
-    path('display_table/', views.display_table, name='display_table'),
-
-
-
+         views.welfare_activity_updaterecord_view, name='welfare_activity_updaterecord'),
+    path('table_list/', views.table_list_view, name='table_list'),
+    path('display_table/', views.display_table_view, name='display_table'),
 ]

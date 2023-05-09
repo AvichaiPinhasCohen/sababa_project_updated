@@ -1,15 +1,11 @@
-import json
-from django.apps import apps
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
-from django.contrib.auth import login, logout
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import login
 from django.http import HttpResponse, HttpResponseRedirect
 from django.template import loader
 from django.urls import reverse
-from django.db import connection, connections
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import *
+from django.db import connections
+from django.contrib.auth.decorators import login_required
 
 from .forms import *
 from .models import *
@@ -90,26 +86,23 @@ def register_to_event(request):
 
 
 def choose_holiday_gift(request):
-    return choose_gift(0, request)
+    return choose_gift(Gifts.Type.HOLIDAY, request)
 
 
 def choose_birthday_gift(request):
-    return choose_gift(1, request)
+    return choose_gift(Gifts.Type.BIRTHDAY, request)
 
 
-def choose_gift(type, request):  # TODO: Impl logic
-    print(request.user)
+@login_required
+def choose_gift(type, request):
     resp = ''
     form = ChooseGiftForm(type, request.POST or None)
     if request.method == "POST":
         if form.is_valid():
-            """
-            invited_gift = InvitedGifts()
-            invited_gift.employee = Employee.objects.get(id=form.cleaned_data['user_id'])
-            print(form.cleaned_data.keys())
-            invited_gift.gift = form.cleaned_data['id']
-            invited_gift.save()
-            """
+            ordered_gift = OrderedGifts()
+            ordered_gift.employee = (UserProfile.objects.get(user=User.objects.get(id=request.user.id))).employee
+            ordered_gift.gift = form.cleaned_data['id']
+            ordered_gift.save()
 
             resp = "Success!"
 
@@ -146,8 +139,6 @@ def login_view(request):
     return render(request, 'login.html', {'form': form})
 
 
-# TODO: Same conventions - add view prefix
-# TODO: Add generic form template function
 def add_employee_view(request):
     resp = ''
     form = AddEmployeeForm(request.POST or None)
@@ -166,7 +157,6 @@ def add_employee_view(request):
     )
 
 
-# TODO: Maybe add to the index ?
 def add_welfare_activity_request_view(request):
     resp = ''
     form = WelfareActivityRequestForm(request.POST or None)
@@ -185,23 +175,24 @@ def add_welfare_activity_request_view(request):
     )
 
 
-def add_preferred_benefits(request):
+def add_preferred_benefits_view(request):
     resp = ''
     records = Benefits.objects.all()
     return render(request, 'list_records.html', {'url': 'edit_benefits_view', 'resp': resp, 'records': records})
 
 
+@login_required
 def edit_benefits_view(request, pk):
     resp = 'Failed'
     record = get_object_or_404(Benefits, pk=pk)
-    ChosenBenefits.objects.create(benefit=record, employee=Employee.objects.get(id=1))  # TODO: Get id from login
+    ChosenBenefits.objects.create(benefit=record, employee=(UserProfile.objects.get(user=User.objects.get(id=request.user.id))).employee)
     resp = 'Added successfully'
     # Render a template with the record's data and an edit form
     print(pk)
     return render(request, 'list_records.html', {'url': 'edit_benefits_view', 'resp': resp, 'record': record})
 
 
-def welfare_activity_confirmation(request):
+def welfare_activity_confirmation_view(request):
     resp = ''
     records = WelfareActivity.objects.all()
     return render(request, 'list_records.html', {'url': 'edit_welfare_activity_confirmation_view', 'resp': resp, 'records': records})
@@ -209,7 +200,8 @@ def welfare_activity_confirmation(request):
 
 def edit_welfare_activity_confirmation_view(request, pk):
     resp = 'Failed'
-    record = get_object_or_404(WelfareActivity, pk=pk)  # TODO: Get employee id and type, update confirm by type. also add another button - accept and faliure
+    # TODO: Get employee id and type, update confirm by type. also add another button - accept and faliure
+    record = get_object_or_404(WelfareActivity, pk=pk)
     # TODO: Update welfare activity
     resp = 'Updated successfully'
     # Render a template with the record's data and an edit form
@@ -217,7 +209,7 @@ def edit_welfare_activity_confirmation_view(request, pk):
     return render(request, 'list_records.html', {'resp': resp, 'record': record})
 
 
-def welfare_acitivity_index(request):
+def welfare_acitivity_index_view(request):
     welfare_activities = WelfareActivity.objects.all().values()
     template = loader.get_template('welfare_activities.html')
     context = {
@@ -226,7 +218,7 @@ def welfare_acitivity_index(request):
     return HttpResponse(template.render(context, request))
 
 
-def welfare_activity_update(request, id):
+def welfare_activity_update_view(request, id):
     activity = WelfareActivity.objects.get(id=id)
     template = loader.get_template('welfare_activity_update.html')
     context = {
@@ -235,7 +227,7 @@ def welfare_activity_update(request, id):
     return HttpResponse(template.render(context, request))
 
 
-def welfare_activity_updaterecord(request, id):
+def welfare_activity_updaterecord_view(request, id):
     activity = WelfareActivity.objects.get(id=id)
     if request.POST.get('submit_button') == 'hr':
         activity.hr_perm = True
@@ -263,7 +255,7 @@ def welfare_activity_updaterecord(request, id):
     return HttpResponseRedirect(reverse('welfare_acitivity_index'))
 
 
-def table_list(request):
+def table_list_view(request):
     table_info = {}
     with connections['default'].cursor() as cursor:
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table'")
@@ -277,7 +269,7 @@ def table_list(request):
     return render(request, 'table_list.html', {'table_info': table_info})
 
 
-def display_table(request):
+def display_table_view(request):
     tables = []
     for key in request.GET.keys():
         if '[]' in key:
@@ -286,14 +278,12 @@ def display_table(request):
     columns = {}
     for table in tables:
         column_list = request.GET.getlist(table)
-        print(column_list)
         if len(column_list) > 0:
             columns[table] = column_list
     data = {}
 
     with connections['default'].cursor() as cursor:
         for table, column_list in columns.items():
-            print(table, column_list)
             cursor.execute(f"SELECT {','.join(column_list)} FROM {table[:-2]}")
             rows = cursor.fetchall()
             data[table[:-2]] = rows

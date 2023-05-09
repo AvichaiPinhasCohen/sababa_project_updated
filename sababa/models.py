@@ -57,14 +57,22 @@ class ChosenBenefits(models.Model):
 class Gifts(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
-    type = models.CharField(max_length=100)  # TODO
+
+    class Type(models.TextChoices):
+        BIRTHDAY = 'BIRTHDAY'
+        HOLIDAY = 'HOLIDAY'
+
+    type = models.CharField(
+        max_length=8,
+        choices=Type.choices,
+    )
 
     def __str__(self):
         return self.name
 
 
-class InvitedGifts(models.Model):  # TODO: Ordered gifts
-    invitation_id = models.AutoField(primary_key=True)
+class OrderedGifts(models.Model):
+    order_id = models.AutoField(primary_key=True)
     gift = models.ForeignKey(Gifts, on_delete=models.DO_NOTHING)
     employee = models.ForeignKey(Employee, on_delete=models.DO_NOTHING)
 
@@ -81,7 +89,7 @@ class WelfareActivity(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
     max_participants = models.IntegerField()
-    dates = models.CharField(max_length=100)  # TODO: List of dates
+    date = models.DateField()
     contact = models.CharField(max_length=100)
     description = models.CharField(max_length=256, default="No description added")
     reason = models.CharField(max_length=256, default="No reason added")
@@ -89,10 +97,8 @@ class WelfareActivity(models.Model):
     hr_perm = models.BooleanField(default=False)
     finance_perm = models.BooleanField(default=False)
 
-    # TODO: If activity is not confirmed, see why
 
-
-class Invitation(models.Model):  # TODO: Rename orders
+class Order(models.Model):
     id = models.AutoField(primary_key=True)
     orderer = models.ForeignKey(Employee, on_delete=models.DO_NOTHING, null=True)
     welfare_order = models.ForeignKey(WelfareActivity, on_delete=models.DO_NOTHING, null=True)

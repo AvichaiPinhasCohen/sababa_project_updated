@@ -5,24 +5,11 @@ from django.contrib.auth.models import User
 
 
 """
-General TODO's:
-1. permission for some forms - including specific permissions for operations such as hr_perm submitting, vieweing specific forms, etc
-2. adding employees using some form - V
-3. renaming invitation to order
-
-
-Needed forms:
-1. choosing present for holiday / birthday - V
-2. registration for event - V
-3. submitting request for welfare activity - validate that it is peilot reveha - V
-4. changing permissions - V
-5. adding benefits to preffered benefits - V
-6. watching organiztion benefits - V
-7. updating welfare activity - V
-8. welfare activity confirmation -V
-9. welfare activity disallow - need to add allow / disallow reason and update the db - V 
-9. generating reports
-10. watching birthdays + sending birthday messages via mail
+TODO: 
+1. Letting only permitted users to permit (hr perm, etc)
+2. birthday view
+3. add everything to the design 
+4. watching birthdays + sending birthday messages via mail
 """
 
 
@@ -58,7 +45,7 @@ class EventRegistrationForm(forms.ModelForm):
 
 class ChooseGiftForm(forms.ModelForm):
     class Meta:
-        model = InvitedGifts
+        model = OrderedGifts
         fields = '__all__'
 
     def __init__(self, type, *args, **kwargs):
@@ -67,9 +54,8 @@ class ChooseGiftForm(forms.ModelForm):
             queryset=Employee.objects.all(),
             to_field_name="id")
 
-        # TODO: Select type to be specific
         self.fields['gift'] = forms.ModelChoiceField(
-            queryset=Gifts.objects.all(),
+            queryset=Gifts.objects.get(type=type),
             to_field_name="id")
 
 
